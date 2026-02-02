@@ -1,27 +1,27 @@
 import { useAppSelector } from "../hooks/redux";
+import { CardItem } from "./CardItem";
 
 export function CardList() {
   const { cards, activeStackId } = useAppSelector((s) => s.wishlist);
 
-  const visible = cards.filter((c) => c.stackId === activeStackId);
+  if (!activeStackId) {
+    return (
+      <div style={{ padding: 12, color: "#6b7280" }}>No stack selected</div>
+    );
+  }
 
-  if (!activeStackId) return null;
+  const visibleCards = cards.filter((card) => card.stackId === activeStackId);
+
+  if (visibleCards.length === 0) {
+    return (
+      <div style={{ padding: 12, color: "#6b7280" }}>This stack is empty</div>
+    );
+  }
 
   return (
-    <div style={{ display: "flex", gap: 12 }}>
-      {visible.map((card) => (
-        <div
-          key={card.id}
-          style={{
-            width: 180,
-            padding: 12,
-            borderRadius: 12,
-            background: "#f3f4f6",
-          }}
-        >
-          <strong>{card.title}</strong>
-          <p style={{ fontSize: 12 }}>{card.description}</p>
-        </div>
+    <div>
+      {visibleCards.map((card) => (
+        <CardItem key={card.id} card={card} />
       ))}
     </div>
   );

@@ -9,7 +9,9 @@ export function CreateStackForm() {
   const dispatch = useAppDispatch();
   const [name, setName] = useState("");
 
-  function submit() {
+  function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+
     if (!name.trim()) return;
 
     dispatch(stackAdded(name.trim()));
@@ -18,29 +20,32 @@ export function CreateStackForm() {
   }
 
   return (
-    <div
+    <form
+      onSubmit={onSubmit}
       style={{
-        padding: 12,
-        borderRadius: 8,
-        background: "#f9fafb",
+        display: "flex",
+        gap: 8,
         marginBottom: 12,
       }}
     >
       <input
+        autoFocus
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder="Stack name"
         style={{
-          width: "100%",
-          padding: 8,
-          marginBottom: 8,
+          flex: 1,
+          padding: "6px 8px",
+          borderRadius: 6,
+          border: "1px solid #d1d5db",
         }}
       />
 
-      <div style={{ display: "flex", gap: 8 }}>
-        <button onClick={submit}>Create</button>
-        <button onClick={() => dispatch(closeCreateStack())}>Cancel</button>
-      </div>
-    </div>
+      <button type="submit">Create</button>
+
+      <button type="button" onClick={() => dispatch(closeCreateStack())}>
+        Cancel
+      </button>
+    </form>
   );
 }

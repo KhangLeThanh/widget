@@ -8,6 +8,7 @@ import {
 import { StackList } from "../stacks/StackList";
 import { CreateStackForm } from "../stacks/CreateStackForm";
 import { CardList } from "../cards/CardList";
+import { AddCardForm } from "../cards/AddCardForm";
 
 export function WishlistDock() {
   const dispatch = useAppDispatch();
@@ -65,6 +66,7 @@ export function WishlistDock() {
           {isCreatingStack && <CreateStackForm />}
 
           <StackList />
+          <AddCardForm />
 
           <CardList />
         </>
