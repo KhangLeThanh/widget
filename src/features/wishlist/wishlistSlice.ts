@@ -17,9 +17,6 @@ export interface WishlistState {
   stacks: Stack[];
   cards: Card[];
   activeStackId: string | null;
-  dockOpen: boolean;
-  filterText: string;
-  isCreatingStack: boolean;
   dockExpanded: boolean;
   swipeMode: boolean;
   showCreateStack: boolean;
@@ -29,9 +26,6 @@ const initialState: WishlistState = {
   stacks: [],
   cards: [],
   activeStackId: null,
-  dockOpen: true,
-  filterText: "",
-  isCreatingStack: false,
   dockExpanded: true,
   swipeMode: false,
   showCreateStack: false,
@@ -43,13 +37,17 @@ const wishlistSlice = createSlice({
   reducers: {
     stackAdded: {
       prepare(name: string) {
-        return { payload: { id: nanoid(), name } };
+        return {
+          payload: {
+            id: nanoid(),
+            name,
+          },
+        };
       },
       reducer(state, action: PayloadAction<Stack>) {
         state.stacks.push(action.payload);
-        if (!state.activeStackId) {
-          state.activeStackId = action.payload.id;
-        }
+        state.activeStackId = action.payload.id;
+        state.showCreateStack = false;
       },
     },
 
@@ -73,12 +71,20 @@ const wishlistSlice = createSlice({
       },
     },
 
+    cardMoved(
+      state,
+      action: PayloadAction<{ cardId: string; stackId: string }>
+    ) {
+      const card = state.cards.find((c) => c.id === action.payload.cardId);
+      if (card) card.stackId = action.payload.stackId;
+    },
+
     dockToggled(state) {
       state.dockExpanded = !state.dockExpanded;
     },
 
-    filterChanged(state, action: PayloadAction<string>) {
-      state.filterText = action.payload;
+    toggleSwipeMode(state) {
+      state.swipeMode = !state.swipeMode;
     },
 
     openCreateStack(state) {
@@ -88,18 +94,6 @@ const wishlistSlice = createSlice({
     closeCreateStack(state) {
       state.showCreateStack = false;
     },
-    toggleSwipeMode(state) {
-      state.swipeMode = !state.swipeMode;
-    },
-    cardMoved(
-      state,
-      action: PayloadAction<{ cardId: string; stackId: string }>
-    ) {
-      const card = state.cards.find((c) => c.id === action.payload.cardId);
-      if (card) {
-        card.stackId = action.payload.stackId;
-      }
-    },
   },
 });
 
@@ -107,12 +101,11 @@ export const {
   stackAdded,
   stackSelected,
   cardAdded,
+  cardMoved,
   dockToggled,
-  filterChanged,
+  toggleSwipeMode,
   openCreateStack,
   closeCreateStack,
-  toggleSwipeMode,
-  cardMoved,
 } = wishlistSlice.actions;
 
 export default wishlistSlice.reducer;
