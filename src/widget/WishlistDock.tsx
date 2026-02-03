@@ -1,75 +1,52 @@
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import {
-  dockToggled,
-  filterChanged,
-  openCreateStack,
-} from "../features/wishlist/wishlistSlice";
-
+import { dockToggled } from "../features/wishlist/wishlistSlice";
 import { StackList } from "../stacks/StackList";
-import { CreateStackForm } from "../stacks/CreateStackForm";
-import { CardList } from "../cards/CardList";
 import { AddCardForm } from "../cards/AddCardForm";
+import { CardList } from "../cards/CardList";
+import { SwipeToggle } from "../cards/SwipeToggle";
+import { CreateStackForm } from "../stacks/CreateStackForm";
 
 export function WishlistDock() {
   const dispatch = useAppDispatch();
-
-  const dockOpen = useAppSelector((s) => s.wishlist.dockOpen);
-  const filterText = useAppSelector((s) => s.wishlist.filterText);
-  const isCreatingStack = useAppSelector((s) => s.wishlist.isCreatingStack);
-
+  const expanded = useAppSelector((s) => s.wishlist.dockExpanded);
+  const showCreateStack = useAppSelector((s) => s.wishlist.showCreateStack);
   return (
     <div
       style={{
-        position: "fixed",
-        bottom: 16,
-        left: "50%",
-        transform: "translateX(-50%)",
-        width: 720,
-        maxWidth: "95vw",
+        width: expanded ? 320 : 180,
+        height: expanded ? 480 : 180,
         background: "#ffffff",
-        borderRadius: 16,
+        borderRadius: 12,
         boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
-        padding: 12,
-        fontFamily: "system-ui, sans-serif",
+        transition: "all 0.25s ease",
+        overflow: "hidden",
         zIndex: 9999,
       }}
     >
       <div
         style={{
+          height: 48,
           display: "flex",
-          gap: 8,
           alignItems: "center",
-          marginBottom: 8,
+          justifyContent: "space-between",
+          padding: "0 12px",
+          borderBottom: "1px solid #e5e7eb",
         }}
       >
+        <strong>Wishlist</strong>
         <button onClick={() => dispatch(dockToggled())}>
-          {dockOpen ? "Minimize" : "Expand"}
+          {expanded ? "–" : "+"}
         </button>
-
-        <input
-          value={filterText}
-          onChange={(e) => dispatch(filterChanged(e.target.value))}
-          placeholder="Filter stacks"
-          style={{
-            flex: 1,
-            padding: "6px 8px",
-            borderRadius: 6,
-            border: "1px solid #d1d5db",
-          }}
-        />
-
-        <button onClick={() => dispatch(openCreateStack())}>+ Stack</button>
       </div>
 
-      {dockOpen && (
-        <>
-          {isCreatingStack && <CreateStackForm />}
-
+      {expanded && (
+        <div style={{ padding: 12 }}>
+          {showCreateStack && <CreateStackForm />}
           <StackList />
+          <SwipeToggle />
           <AddCardForm />
-
           <CardList />
-        </>
+        </div>
       )}
     </div>
   );

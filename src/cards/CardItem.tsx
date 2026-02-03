@@ -1,3 +1,5 @@
+import { useAppDispatch, useAppSelector } from "../hooks/redux";
+import { cardMoved } from "../features/wishlist/wishlistSlice";
 import type { Card } from "../features/wishlist/wishlistSlice";
 
 interface Props {
@@ -5,6 +7,8 @@ interface Props {
 }
 
 export function CardItem({ card }: Props) {
+  const dispatch = useAppDispatch();
+  const stacks = useAppSelector((s) => s.wishlist.stacks);
   return (
     <div
       style={{
@@ -29,6 +33,23 @@ export function CardItem({ card }: Props) {
       {card.description && (
         <div style={{ fontSize: 14, color: "#6b7280" }}>{card.description}</div>
       )}
+      <select
+        value={card.stackId}
+        onChange={(e) =>
+          dispatch(
+            cardMoved({
+              cardId: card.id,
+              stackId: e.target.value,
+            })
+          )
+        }
+      >
+        {stacks.map((s) => (
+          <option key={s.id} value={s.id}>
+            {s.name}
+          </option>
+        ))}
+      </select>
     </div>
   );
 }

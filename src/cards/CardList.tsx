@@ -1,21 +1,20 @@
 import { useAppSelector } from "../hooks/redux";
 import { CardItem } from "./CardItem";
+import { SwipeCardStack } from "./SwipeCardStack";
 
 export function CardList() {
-  const { cards, activeStackId } = useAppSelector((s) => s.wishlist);
+  const { cards, activeStackId, swipeMode } = useAppSelector((s) => s.wishlist);
 
-  if (!activeStackId) {
-    return (
-      <div style={{ padding: 12, color: "#6b7280" }}>No stack selected</div>
-    );
-  }
+  if (!activeStackId) return null;
 
   const visibleCards = cards.filter((card) => card.stackId === activeStackId);
 
   if (visibleCards.length === 0) {
-    return (
-      <div style={{ padding: 12, color: "#6b7280" }}>This stack is empty</div>
-    );
+    return <div>This stack is empty</div>;
+  }
+
+  if (swipeMode) {
+    return <SwipeCardStack />;
   }
 
   return (

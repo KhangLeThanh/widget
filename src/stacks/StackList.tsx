@@ -1,12 +1,24 @@
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import { stackSelected } from "../features/wishlist/wishlistSlice";
+import {
+  stackSelected,
+  openCreateStack,
+} from "../features/wishlist/wishlistSlice";
 import { StackItem } from "./StackItem";
 
 export function StackList() {
   const dispatch = useAppDispatch();
+  const { stacks, activeStackId } = useAppSelector((s) => s.wishlist);
 
-  const stacks = useAppSelector((s) => s.wishlist.stacks);
-  const activeStackId = useAppSelector((s) => s.wishlist.activeStackId);
+  if (stacks.length === 0) {
+    return (
+      <div style={{ marginBottom: 12 }}>
+        <p style={{ marginBottom: 8, color: "#6b7280" }}>No stacks yet</p>
+        <button onClick={() => dispatch(openCreateStack())}>
+          + Create stack
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -20,6 +32,8 @@ export function StackList() {
           onClick={() => dispatch(stackSelected(stack.id))}
         />
       ))}
+
+      <button onClick={() => dispatch(openCreateStack())}>+</button>
     </div>
   );
 }
