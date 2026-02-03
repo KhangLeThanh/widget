@@ -54,7 +54,18 @@ const wishlistSlice = createSlice({
     stackSelected(state, action: PayloadAction<string>) {
       state.activeStackId = action.payload;
     },
+    stackDeleted(state, action: PayloadAction<string>) {
+      const stackId = action.payload;
 
+      state.stacks = state.stacks.filter((s) => s.id !== stackId);
+
+      state.cards = state.cards.filter((c) => c.stackId !== stackId);
+
+      if (state.activeStackId === stackId) {
+        state.activeStackId =
+          state.stacks.length > 0 ? state.stacks[0].id : null;
+      }
+    },
     cardAdded: {
       prepare(stackId: string, title: string, description?: string) {
         return {
@@ -73,10 +84,17 @@ const wishlistSlice = createSlice({
 
     cardMoved(
       state,
-      action: PayloadAction<{ cardId: string; stackId: string }>
+      action: PayloadAction<{
+        cardId: string;
+        targetStackId: string;
+      }>
     ) {
-      const card = state.cards.find((c) => c.id === action.payload.cardId);
-      if (card) card.stackId = action.payload.stackId;
+      const { cardId, targetStackId } = action.payload;
+
+      const card = state.cards.find((c) => c.id === cardId);
+      if (card) {
+        card.stackId = targetStackId;
+      }
     },
 
     dockToggled(state) {
@@ -99,6 +117,7 @@ const wishlistSlice = createSlice({
 
 export const {
   stackAdded,
+  stackDeleted,
   stackSelected,
   cardAdded,
   cardMoved,

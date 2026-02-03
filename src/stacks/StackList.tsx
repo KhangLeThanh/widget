@@ -2,12 +2,13 @@ import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import {
   stackSelected,
   openCreateStack,
+  stackDeleted,
 } from "../features/wishlist/wishlistSlice";
 import { StackItem } from "./StackItem";
 
 export function StackList() {
   const dispatch = useAppDispatch();
-  const { stacks, activeStackId } = useAppSelector((s) => s.wishlist);
+  const { stacks, cards, activeStackId } = useAppSelector((s) => s.wishlist);
 
   if (stacks.length === 0) {
     return (
@@ -24,14 +25,20 @@ export function StackList() {
     <div
       style={{ display: "flex", gap: 8, overflowX: "auto", marginBottom: 12 }}
     >
-      {stacks.map((stack) => (
-        <StackItem
-          key={stack.id}
-          stack={stack}
-          active={stack.id === activeStackId}
-          onClick={() => dispatch(stackSelected(stack.id))}
-        />
-      ))}
+      {stacks.map((stack) => {
+        const count = cards.filter((c) => c.stackId === stack.id).length;
+
+        return (
+          <StackItem
+            key={stack.id}
+            stack={stack}
+            count={count}
+            active={stack.id === activeStackId}
+            onClick={() => dispatch(stackSelected(stack.id))}
+            onDelete={() => dispatch(stackDeleted(stack.id))}
+          />
+        );
+      })}
 
       <button onClick={() => dispatch(openCreateStack())}>+</button>
     </div>

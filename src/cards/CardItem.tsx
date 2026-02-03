@@ -1,5 +1,3 @@
-import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import { cardMoved } from "../features/wishlist/wishlistSlice";
 import type { Card } from "../features/wishlist/wishlistSlice";
 
 interface Props {
@@ -7,49 +5,34 @@ interface Props {
 }
 
 export function CardItem({ card }: Props) {
-  const dispatch = useAppDispatch();
-  const stacks = useAppSelector((s) => s.wishlist.stacks);
   return (
     <div
+      draggable
+      onDragOver={(e) => {
+        e.preventDefault();
+      }}
+      onDragEnter={(e) => {
+        e.currentTarget.style.opacity = "0.7";
+      }}
+      onDragLeave={(e) => {
+        e.currentTarget.style.opacity = "1";
+      }}
+      onDragStart={(e) => {
+        e.dataTransfer.setData("cardId", card.id);
+        e.dataTransfer.effectAllowed = "move";
+      }}
       style={{
-        border: "1px solid #e5e7eb",
-        borderRadius: 8,
         padding: 12,
-        marginBottom: 8,
+        borderRadius: 8,
+        border: "1px solid #d1d5db",
         background: "#fff",
+        cursor: "grab",
       }}
     >
-      <div
-        style={{
-          height: 120,
-          borderRadius: 6,
-          background: "#e5e7eb",
-          marginBottom: 8,
-        }}
-      />
-
-      <div style={{ fontWeight: 600 }}>{card.title}</div>
-
+      <strong>{card.title}</strong>
       {card.description && (
-        <div style={{ fontSize: 14, color: "#6b7280" }}>{card.description}</div>
+        <p style={{ fontSize: 12, color: "#6b7280" }}>{card.description}</p>
       )}
-      <select
-        value={card.stackId}
-        onChange={(e) =>
-          dispatch(
-            cardMoved({
-              cardId: card.id,
-              stackId: e.target.value,
-            })
-          )
-        }
-      >
-        {stacks.map((s) => (
-          <option key={s.id} value={s.id}>
-            {s.name}
-          </option>
-        ))}
-      </select>
     </div>
   );
 }
