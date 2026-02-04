@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { cardAdded, setCreateModal } from "../features/wishlist/wishlistSlice";
-import { CreateModalType } from "../enum";
+import { CreateModalType } from "../utils/enum";
 
 export function AddCardForm() {
   const dispatch = useAppDispatch();

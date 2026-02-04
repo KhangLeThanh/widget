@@ -1,7 +1,7 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-import { CreateModalType } from "../../enum";
+import { CreateModalType } from "../../utils/enum";
 
 export interface Stack {
   id: string;

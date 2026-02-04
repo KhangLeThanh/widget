@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAppDispatch } from "../hooks/redux";
 import { stackAdded, setCreateModal } from "../features/wishlist/wishlistSlice";
-import { CreateModalType } from "../enum";
+import { CreateModalType } from "../utils/enum";
 
 export function CreateStackForm() {
   const dispatch = useAppDispatch();

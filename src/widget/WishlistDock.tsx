@@ -9,7 +9,7 @@ import { CreateStackForm } from "../stacks/CreateStackForm";
 import { AddCardForm } from "../cards/AddCardForm";
 import { CardList } from "../cards/CardList";
 import { SwipeToggle } from "../cards/SwipeToggle";
-import { CreateModalType } from "../enum";
+import { CreateModalType } from "../utils/enum";
 
 export function WishlistDock() {
   const dispatch = useAppDispatch();
@@ -66,8 +66,14 @@ export function WishlistDock() {
         </div>
 
         {dockExpanded && (
-          <div className="flex flex-col gap-3 p-3">
-            <StackList />
+          <div className="flex flex-col gap-3 p-3 mt-4">
+            {stacks.length > 0 ? (
+              <StackList />
+            ) : (
+              <p className="text-gray-500 text-center text-lg italic py-4">
+                There is no stack
+              </p>
+            )}
             {cards.length > 0 && <SwipeToggle />}
             <CardList />
           </div>
