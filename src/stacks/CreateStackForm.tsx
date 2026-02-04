@@ -20,31 +20,31 @@ export function CreateStackForm() {
   return (
     <form
       onSubmit={submit}
-      style={{
-        padding: 12,
-        border: "1px solid #e5e7eb",
-        borderRadius: 8,
-        marginBottom: 12,
-      }}
+      className="p-4 border border-gray-300 rounded-md mb-3 bg-white shadow-sm"
     >
-      <h4>Create Stack</h4>
+      <h4 className="text-lg font-semibold mb-3">Create Stack</h4>
 
       <input
         placeholder="Stack name"
         value={name}
         onChange={(e) => setName(e.target.value)}
-        style={{ width: "100%", marginBottom: 8 }}
+        className="w-full mb-2 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
       />
 
       <input
         placeholder="Cover image URL (optional)"
         value={cover}
         onChange={(e) => setCover(e.target.value)}
-        style={{ width: "100%", marginBottom: 8 }}
+        className="w-full mb-2 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
       />
 
-      <div style={{ display: "flex", gap: 8 }}>
-        <button type="submit">Create</button>
+      <div className="flex gap-2">
+        <button
+          type="submit"
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+        >
+          Create
+        </button>
         <button
           type="button"
           onClick={() =>
@@ -52,6 +52,7 @@ export function CreateStackForm() {
               setCreateModal({ type: CreateModalType.STACK, open: false })
             )
           }
+          className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition"
         >
           Cancel
         </button>

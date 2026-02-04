@@ -8,7 +8,7 @@ export function SwipeToggle() {
   return (
     <button
       onClick={() => dispatch(toggleSwipeMode())}
-      style={{ marginBottom: 8 }}
+      className="mb-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
     >
       {swipeMode ? "List view" : "Swipe view"}
     </button>

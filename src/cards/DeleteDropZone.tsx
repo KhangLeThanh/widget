@@ -16,21 +16,7 @@ export function DeleteDropZone() {
     <div
       onDragOver={(e) => e.preventDefault()}
       onDrop={handleDrop}
-      style={{
-        position: "fixed",
-        bottom: 16,
-        right: 16,
-        width: 80,
-        height: 80,
-        borderRadius: 40,
-        background: "red",
-        color: "#fff",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontWeight: "bold",
-        zIndex: 1000,
-      }}
+      className="fixed bottom-0 left-0 w-full h-20 bg-red-500 text-white font-bold flex items-center justify-center z-50"
     >
       Delete
     </div>

@@ -10,14 +10,7 @@ export function StackList() {
   const { stacks, cards, activeStackId } = useAppSelector((s) => s.wishlist);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        gap: 8,
-        overflowX: "auto",
-        marginBottom: 12,
-      }}
-    >
+    <div className="flex gap-2 overflow-x-auto mb-3 py-1">
       {stacks.map((stack) => {
         const count = cards.filter((c) => c.stackId === stack.id).length;
 

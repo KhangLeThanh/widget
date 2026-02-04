@@ -38,18 +38,14 @@ export function AddCardForm() {
   return (
     <form
       onSubmit={onSubmit}
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 8,
-        marginBottom: 12,
-      }}
+      className="flex flex-col gap-2 p-4 border border-gray-300 rounded-md mb-3 bg-white shadow-sm"
     >
       <input
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Card title"
         required
+        className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
       />
 
       <textarea
@@ -57,6 +53,7 @@ export function AddCardForm() {
         onChange={(e) => setDescription(e.target.value)}
         placeholder="Description (optional)"
         rows={2}
+        className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
       />
 
       <input
@@ -64,12 +61,14 @@ export function AddCardForm() {
         onChange={(e) => setCover(e.target.value)}
         placeholder="Cover image URL (required)"
         required
+        className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
       />
 
       <select
         value={selectedStackId ?? activeStackId ?? ""}
         onChange={(e) => setSelectedStackId(e.target.value)}
         required
+        className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
       >
         {stacks.map((s) => (
           <option key={s.id} value={s.id}>
@@ -77,8 +76,14 @@ export function AddCardForm() {
           </option>
         ))}
       </select>
-      <div style={{ display: "flex", gap: 8 }}>
-        <button type="submit">Add card</button>
+
+      <div className="flex gap-2 mt-2">
+        <button
+          type="submit"
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+        >
+          Add card
+        </button>
         <button
           type="button"
           onClick={() =>
@@ -86,6 +91,7 @@ export function AddCardForm() {
               setCreateModal({ type: CreateModalType.CARD, open: false })
             )
           }
+          className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition"
         >
           Cancel
         </button>

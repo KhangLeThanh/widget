@@ -10,24 +10,14 @@ export function SwipeCardStack() {
   const stackCards = cards.filter((c) => c.stackId === activeStackId);
 
   if (stackCards.length === 0) {
-    return <div>No cards</div>;
+    return <div className="text-gray-500 text-sm">No cards</div>;
   }
 
   return (
-    <div
-      style={{
-        position: "relative",
-        height: 360,
-      }}
-    >
+    <div className="relative h-96">
       {stackCards.map((card) => (
         <TinderCard key={card.id} preventSwipe={["up", "down"]}>
-          <div
-            style={{
-              position: "absolute",
-              width: "100%",
-            }}
-          >
+          <div className="absolute w-full">
             <CardItem card={card} />
           </div>
         </TinderCard>

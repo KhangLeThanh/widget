@@ -10,15 +10,13 @@ export function CardList() {
   const visibleCards = cards.filter((card) => card.stackId === activeStackId);
 
   if (visibleCards.length === 0) {
-    return <div>This stack is empty</div>;
+    return <div className="text-gray-500 text-sm">This stack is empty</div>;
   }
 
-  if (swipeMode) {
-    return <SwipeCardStack />;
-  }
-
-  return (
-    <div>
+  return swipeMode ? (
+    <SwipeCardStack />
+  ) : (
+    <div className="flex flex-col gap-3">
       {visibleCards.map((card) => (
         <CardItem key={card.id} card={card} />
       ))}

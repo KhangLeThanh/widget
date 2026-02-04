@@ -12,38 +12,28 @@ export function CardItem({ card }: Props) {
     <>
       <div
         draggable
-        onDragOver={(e) => {
-          e.preventDefault();
-        }}
-        onDragEnter={(e) => {
-          e.currentTarget.style.opacity = "0.7";
-        }}
-        onDragLeave={(e) => {
-          e.currentTarget.style.opacity = "1";
-        }}
+        onDragOver={(e) => e.preventDefault()}
+        onDragEnter={(e) => e.currentTarget.classList.add("opacity-70")}
+        onDragLeave={(e) => e.currentTarget.classList.remove("opacity-70")}
         onDragStart={(e) => {
           e.dataTransfer.setData("cardId", card.id);
           e.dataTransfer.effectAllowed = "move";
           setIsDragging(true);
         }}
         onDragEnd={() => setIsDragging(false)}
+        className="relative p-3 rounded-lg border border-gray-300 cursor-grab shadow-inner transition-transform duration-150 ease-in-out transform hover:scale-105"
         style={{
-          padding: 12,
-          borderRadius: 8,
-          border: "1px solid #d1d5db",
-          background: "#fff",
-          cursor: "grab",
           backgroundImage: `url(${card.cover})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          boxShadow: "rgb(71 71 71 / 30%) 0px 0px 0px 2000px inset",
         }}
       >
-        <strong style={{ fontSize: 14, color: "#fff" }}>{card.title}</strong>
+        <strong className="text-white text-sm">{card.title}</strong>
         {card.description && (
-          <p style={{ fontSize: 12, color: "#fff" }}>{card.description}</p>
+          <p className="text-white text-xs">{card.description}</p>
         )}
       </div>
+
       {isDragging && <DeleteDropZone />}
     </>
   );
