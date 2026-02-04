@@ -18,23 +18,27 @@ The dock lives in the bottom-right corner and expands smoothly to the bottom-cen
 
 ---
 
-## Tech Stack
+## Live Demo
 
-- **React** (with Hooks)
-- **TypeScript**
-- **Redux Toolkit**
-- **Tailwind CSS v3**
-- **Vite**
+Live Url: [https://khanglethanh.github.io/widget/](https://khanglethanh.github.io/widget/)
 
 ---
 
-## 🚀 Getting Started
+## Embedding the Widget
 
-### 1️⃣ Install dependencies
+You can embed the widget on any website using an `<iframe>`:
 
-```bash
-npm install
-```
+````html
+<iframe
+  src="https://khanglethanh.github.io/widget/"
+  width="400"
+  height="600"
+  style="border:none; border-radius:12px;"
+></iframe>
+## Tech Stack - **React** (with Hooks) - **TypeScript** - **Redux Toolkit** -
+**Tailwind CSS v3** - **Vite** --- ## 🚀 Getting Started ### 1️⃣ Install
+dependencies ```bash npm install
+````
 
 ### 2️⃣ Run the dev server
 
@@ -76,14 +80,3 @@ Actions include:
 - `dockToggled`
 
 ---
-
-## Embedding the Widget
-
-iframe (simple isolation)
-
-<iframe
-  src="https://your-cdn.com/widget.html"
-  width="400"
-  height="600"
-  style="border:none; border-radius:12px;"
-></iframe>
