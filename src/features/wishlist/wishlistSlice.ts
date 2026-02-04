@@ -4,6 +4,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 export interface Stack {
   id: string;
   name: string;
+  cover?: string;
 }
 
 export interface Card {
@@ -11,6 +12,7 @@ export interface Card {
   stackId: string;
   title: string;
   description?: string;
+  cover: string;
 }
 
 export interface WishlistState {
@@ -21,6 +23,11 @@ export interface WishlistState {
   swipeMode: boolean;
   showCreateStack: boolean;
 }
+const randomCover = () =>
+  `linear-gradient(135deg,
+    hsl(${Math.random() * 360}, 70%, 60%),
+    hsl(${Math.random() * 360}, 70%, 50%)
+  )`;
 
 const initialState: WishlistState = {
   stacks: [],
@@ -36,11 +43,12 @@ const wishlistSlice = createSlice({
   initialState,
   reducers: {
     stackAdded: {
-      prepare(name: string) {
+      prepare(name: string, cover?: string) {
         return {
           payload: {
             id: nanoid(),
             name,
+            cover: cover ?? randomCover(),
           },
         };
       },
@@ -67,12 +75,18 @@ const wishlistSlice = createSlice({
       }
     },
     cardAdded: {
-      prepare(stackId: string, title: string, description?: string) {
+      prepare(
+        stackId: string,
+        title: string,
+        cover: string,
+        description?: string
+      ) {
         return {
           payload: {
             id: nanoid(),
             stackId,
             title,
+            cover,
             description,
           },
         };
