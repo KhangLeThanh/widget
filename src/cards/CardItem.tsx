@@ -3,8 +3,9 @@ import type { Card } from "../features/wishlist/wishlistSlice";
 interface Props {
   card: Card;
 }
-
 export function CardItem({ card }: Props) {
+  console.log("Test card", card);
+
   return (
     <div
       draggable
@@ -27,11 +28,15 @@ export function CardItem({ card }: Props) {
         border: "1px solid #d1d5db",
         background: "#fff",
         cursor: "grab",
+        backgroundImage: `url(${card.cover})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        boxShadow: "rgb(71 71 71 / 30%) 0px 0px 0px 2000px inset",
       }}
     >
       <strong>{card.title}</strong>
       {card.description && (
-        <p style={{ fontSize: 12, color: "#6b7280" }}>{card.description}</p>
+        <p style={{ fontSize: 12, color: "#fff" }}>{card.description}</p>
       )}
     </div>
   );

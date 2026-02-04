@@ -6,10 +6,7 @@ export function AddCardForm() {
   const dispatch = useAppDispatch();
   const { activeStackId, stacks } = useAppSelector((s) => s.wishlist);
 
-  const [selectedStackId, setSelectedStackId] = useState<string | null>(
-    activeStackId
-  );
-
+  const [selectedStackId, setSelectedStackId] = useState<string | null>(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [cover, setCover] = useState("");
@@ -19,13 +16,13 @@ export function AddCardForm() {
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    if (!title.trim()) return;
-    if (!cover.trim()) return;
-    if (!selectedStackId) return;
+    const stackIdToUse = selectedStackId ?? activeStackId;
+
+    if (!title.trim() || !cover.trim() || !stackIdToUse) return;
 
     dispatch(
       cardAdded(
-        selectedStackId,
+        stackIdToUse,
         title.trim(),
         cover.trim(),
         description.trim() || undefined
@@ -35,6 +32,7 @@ export function AddCardForm() {
     setTitle("");
     setDescription("");
     setCover("");
+    setSelectedStackId(null); // reset selection
   }
 
   return (
@@ -69,7 +67,7 @@ export function AddCardForm() {
       />
 
       <select
-        value={selectedStackId ?? ""}
+        value={selectedStackId ?? activeStackId}
         onChange={(e) => setSelectedStackId(e.target.value)}
         required
       >
