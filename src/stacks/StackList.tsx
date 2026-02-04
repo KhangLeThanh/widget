@@ -2,7 +2,6 @@ import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import {
   stackSelected,
   stackDeleted,
-  openCreateStack,
 } from "../features/wishlist/wishlistSlice";
 import { StackItem } from "./StackItem";
 
@@ -33,8 +32,6 @@ export function StackList() {
           />
         );
       })}
-
-      <button onClick={() => dispatch(openCreateStack())}>+</button>
     </div>
   );
 }

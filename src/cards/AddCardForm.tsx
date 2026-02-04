@@ -1,17 +1,19 @@
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import { cardAdded } from "../features/wishlist/wishlistSlice";
+import { cardAdded, closeCreateCard } from "../features/wishlist/wishlistSlice";
 
 export function AddCardForm() {
   const dispatch = useAppDispatch();
-  const { activeStackId, stacks } = useAppSelector((s) => s.wishlist);
+  const { activeStackId, showCreateCard, stacks } = useAppSelector(
+    (s) => s.wishlist
+  );
 
   const [selectedStackId, setSelectedStackId] = useState<string | null>(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [cover, setCover] = useState("");
 
-  if (!activeStackId || stacks.length === 0) return null;
+  if (!showCreateCard) return null;
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -32,7 +34,8 @@ export function AddCardForm() {
     setTitle("");
     setDescription("");
     setCover("");
-    setSelectedStackId(null); // reset selection
+    setSelectedStackId(null);
+    dispatch(closeCreateCard());
   }
 
   return (
@@ -67,7 +70,7 @@ export function AddCardForm() {
       />
 
       <select
-        value={selectedStackId ?? activeStackId}
+        value={selectedStackId ?? activeStackId ?? ""}
         onChange={(e) => setSelectedStackId(e.target.value)}
         required
       >
@@ -77,8 +80,12 @@ export function AddCardForm() {
           </option>
         ))}
       </select>
-
-      <button type="submit">Add card</button>
+      <div style={{ display: "flex", gap: 8 }}>
+        <button type="submit">Add card</button>
+        <button type="button" onClick={() => dispatch(closeCreateCard())}>
+          Cancel
+        </button>
+      </div>
     </form>
   );
 }

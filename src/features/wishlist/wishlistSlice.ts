@@ -22,6 +22,7 @@ export interface WishlistState {
   dockExpanded: boolean;
   swipeMode: boolean;
   showCreateStack: boolean;
+  showCreateCard: boolean;
 }
 const randomCover = () =>
   `linear-gradient(135deg,
@@ -36,6 +37,7 @@ const initialState: WishlistState = {
   dockExpanded: true,
   swipeMode: false,
   showCreateStack: false,
+  showCreateCard: false,
 };
 
 const wishlistSlice = createSlice({
@@ -126,6 +128,13 @@ const wishlistSlice = createSlice({
     closeCreateStack(state) {
       state.showCreateStack = false;
     },
+    openCreateCard(state) {
+      state.showCreateCard = true;
+    },
+
+    closeCreateCard(state) {
+      state.showCreateCard = false;
+    },
   },
 });
 
@@ -139,6 +148,8 @@ export const {
   toggleSwipeMode,
   openCreateStack,
   closeCreateStack,
+  openCreateCard,
+  closeCreateCard,
 } = wishlistSlice.actions;
 
 export default wishlistSlice.reducer;
