@@ -5,16 +5,12 @@ import { CreateModalType } from "../enum";
 
 export function AddCardForm() {
   const dispatch = useAppDispatch();
-  const { activeStackId, showCreateCard, stacks } = useAppSelector(
-    (s) => s.wishlist
-  );
+  const { activeStackId, stacks } = useAppSelector((s) => s.wishlist);
 
   const [selectedStackId, setSelectedStackId] = useState<string | null>(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [cover, setCover] = useState("");
-
-  if (!showCreateCard) return null;
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();

@@ -1,0 +1,102 @@
+/* Dock base */
+.wishlist-dock {
+  position: fixed;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  z-index: 50;
+  transition: all 0.3s ease;
+  bottom: 16px; /* always at bottom */
+}
+
+/* Collapsed dock (bottom-right) */
+.wishlist-dock.collapsed {
+  width: 180px;
+  height: 50px;
+  right: 16px;
+}
+
+/* Expanded dock (bottom-center, grows upward) */
+.wishlist-dock.expanded {
+  width: 360px;
+  height: 200px; /* grows upward from bottom */
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Header */
+.dock-header {
+  height: 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px;
+}
+
+/* Dock content */
+.dock-content {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* "+" button container */
+.plus-button-container {
+  position: absolute;
+  bottom: 12px; /* stick to bottom inside dock */
+  right: 12px;
+}
+
+/* "+" button */
+.plus-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  background: #f9f9f9;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Create menu popup */
+.create-menu {
+  position: fixed;
+  transform: translateX(-50%);
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 120px;
+  z-index: 100;
+}
+
+/* Menu items */
+.menu-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  user-select: none;
+}
+
+.menu-item.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.popup-form-center {
+  position: fixed; /* relative to viewport */
+  top: 50%; /* vertical center */
+  left: 50%; /* horizontal center */
+  transform: translate(-50%, -50%); /* perfectly center */
+  z-index: 200;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  padding: 16px;
+  min-width: 320px; /* minimum width */
+  max-width: 400px; /* maximum width */
+  max-height: 90vh; /* prevent overflow vertically */
+  overflow-y: auto; /* scroll if content is too tall */
+}

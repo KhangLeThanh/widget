@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import {
   dockToggled,
@@ -10,129 +10,102 @@ import { AddCardForm } from "../cards/AddCardForm";
 import { CardList } from "../cards/CardList";
 import { SwipeToggle } from "../cards/SwipeToggle";
 import { CreateModalType } from "../enum";
+import "./WishlistDock.css";
 
 export function WishlistDock() {
   const dispatch = useAppDispatch();
-  const expanded = useAppSelector((s) => s.wishlist.dockExpanded);
-  const { activeStackId, stacks, showCreateStack } = useAppSelector(
+  const { dockExpanded, activeStackId, stacks, createModal } = useAppSelector(
     (s) => s.wishlist
   );
 
   const [showCreateMenu, setShowCreateMenu] = useState(false);
+  const plusButtonRef = useRef<HTMLButtonElement>(null);
+  const [popupPos, setPopupPos] = useState({ top: 0, left: 0 });
 
-  const handleCreateClick = () => {
-    setShowCreateMenu((prev) => !prev);
-  };
+  // Calculate "+" button position for menu/forms
+  useEffect(() => {
+    if (plusButtonRef.current) {
+      const rect = plusButtonRef.current.getBoundingClientRect();
+      setPopupPos({ top: rect.top, left: rect.left + rect.width / 2 });
+    }
+  }, [dockExpanded, showCreateMenu]);
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        right: 16,
-        bottom: 16,
-        width: expanded ? 320 : 180,
-        height: expanded ? 480 : 180,
-        transition: "all 0.25s ease",
-        background: "#fff",
-        borderRadius: 12,
-        boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
-        overflow: "hidden",
-      }}
-    >
+    <>
+      {/* Dock */}
       <div
-        style={{
-          height: 48,
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: "0 12px",
-          position: "relative",
-        }}
+        className={`wishlist-dock ${dockExpanded ? "expanded" : "collapsed"}`}
       >
-        <strong>Wishlist</strong>
-        <button onClick={() => dispatch(dockToggled())}>
-          {expanded ? "–" : "+"}
-        </button>
-      </div>
+        {/* Header */}
+        <div className="dock-header">
+          <strong>Wishlist</strong>
+          <button onClick={() => dispatch(dockToggled())}>
+            {dockExpanded ? "–" : "+"}
+          </button>
+        </div>
 
-      <div style={{ position: "relative", padding: "12px" }}>
-        <button
-          onClick={handleCreateClick}
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: "50%",
-            border: "1px solid #ddd",
-            background: "#f9f9f9",
-            fontSize: 24,
-            cursor: "pointer",
-          }}
-        >
-          +
-        </button>
-
-        {showCreateMenu && (
-          <div
-            style={{
-              position: "absolute",
-              bottom: "20%",
-              left: "20%",
-              background: "#fff",
-              border: "1px solid #eee",
-              borderRadius: 8,
-              boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-              padding: "8px 0",
-              width: 120,
-            }}
-          >
-            <div
-              onClick={() => {
-                if (!activeStackId || stacks.length === 0) return;
-                dispatch(
-                  setCreateModal({ type: CreateModalType.CARD, open: true })
-                );
-                setShowCreateMenu(false);
-              }}
-              style={{
-                padding: "8px 12px",
-                cursor:
-                  !activeStackId || stacks.length === 0
-                    ? "not-allowed"
-                    : "pointer",
-                opacity: !activeStackId || stacks.length === 0 ? 0.5 : 1,
-                borderBottom: "1px solid #eee",
-                userSelect: "none",
-              }}
-            >
-              Card
+        {dockExpanded && (
+          <div className="dock-content">
+            <div className="plus-button-container">
+              <button
+                ref={plusButtonRef}
+                onClick={() => setShowCreateMenu((prev) => !prev)}
+                className="plus-button"
+              >
+                +
+              </button>
             </div>
-            <div
-              onClick={() => {
-                dispatch(
-                  setCreateModal({ type: CreateModalType.STACK, open: true })
-                );
-                setShowCreateMenu(false);
-              }}
-              style={{
-                padding: "8px 12px",
-                cursor: "pointer",
-              }}
-            >
-              Stack
-            </div>
+            <StackList />
+            <SwipeToggle />
+            <CardList />
           </div>
         )}
       </div>
 
-      {expanded && (
-        <div style={{ padding: 12 }}>
-          {showCreateStack && <CreateStackForm />}
-          <StackList />
-          <SwipeToggle />
-          <AddCardForm />
-          <CardList />
+      {showCreateMenu && (
+        <div
+          className="create-menu"
+          style={{ top: popupPos.top - 80, left: popupPos.left }}
+        >
+          <div
+            className={`menu-item ${
+              !activeStackId || stacks.length === 0 ? "disabled" : ""
+            }`}
+            onClick={() => {
+              if (!activeStackId || stacks.length === 0) return;
+              dispatch(
+                setCreateModal({ type: CreateModalType.CARD, open: true })
+              );
+              setShowCreateMenu(false);
+            }}
+          >
+            Card
+          </div>
+          <div
+            className="menu-item"
+            onClick={() => {
+              dispatch(
+                setCreateModal({ type: CreateModalType.STACK, open: true })
+              );
+              setShowCreateMenu(false);
+            }}
+          >
+            Stack
+          </div>
         </div>
       )}
-    </div>
+
+      {createModal.open && createModal.type === CreateModalType.CARD && (
+        <div className="popup-form-center">
+          <AddCardForm />
+        </div>
+      )}
+
+      {createModal.open && createModal.type === CreateModalType.STACK && (
+        <div className="popup-form-center">
+          <CreateStackForm />
+        </div>
+      )}
+    </>
   );
 }

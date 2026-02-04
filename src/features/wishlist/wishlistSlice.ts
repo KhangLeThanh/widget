@@ -1,5 +1,6 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+
 import { CreateModalType } from "../../enum";
 
 export interface Stack {
@@ -22,12 +23,10 @@ export interface WishlistState {
   activeStackId: string | null;
   dockExpanded: boolean;
   swipeMode: boolean;
-  showCreateStack: boolean;
-  showCreateCard: boolean;
-}
-interface SetCreateModalPayload {
-  type: CreateModalType;
-  open: boolean;
+  createModal: {
+    type: CreateModalType;
+    open: boolean;
+  };
 }
 
 const randomCover = () =>
@@ -42,14 +41,14 @@ const initialState: WishlistState = {
   activeStackId: null,
   dockExpanded: true,
   swipeMode: false,
-  showCreateStack: false,
-  showCreateCard: false,
+  createModal: { type: CreateModalType.NONE, open: false },
 };
 
 const wishlistSlice = createSlice({
   name: "wishlist",
   initialState,
   reducers: {
+    // Add a new stack
     stackAdded: {
       prepare(name: string, cover?: string) {
         return {
@@ -63,18 +62,19 @@ const wishlistSlice = createSlice({
       reducer(state, action: PayloadAction<Stack>) {
         state.stacks.push(action.payload);
         state.activeStackId = action.payload.id;
-        state.showCreateStack = false;
+        state.createModal = { type: CreateModalType.NONE, open: false };
       },
     },
 
+    // Select a stack
     stackSelected(state, action: PayloadAction<string>) {
       state.activeStackId = action.payload;
     },
+
+    // Delete a stack and its cards
     stackDeleted(state, action: PayloadAction<string>) {
       const stackId = action.payload;
-
       state.stacks = state.stacks.filter((s) => s.id !== stackId);
-
       state.cards = state.cards.filter((c) => c.stackId !== stackId);
 
       if (state.activeStackId === stackId) {
@@ -82,6 +82,8 @@ const wishlistSlice = createSlice({
           state.stacks.length > 0 ? state.stacks[0].id : null;
       }
     },
+
+    // Add a card
     cardAdded: {
       prepare(
         stackId: string,
@@ -90,13 +92,7 @@ const wishlistSlice = createSlice({
         description?: string
       ) {
         return {
-          payload: {
-            id: nanoid(),
-            stackId,
-            title,
-            cover,
-            description,
-          },
+          payload: { id: nanoid(), stackId, title, cover, description },
         };
       },
       reducer(state, action: PayloadAction<Card>) {
@@ -104,35 +100,37 @@ const wishlistSlice = createSlice({
       },
     },
 
+    // Move a card between stacks
     cardMoved(
       state,
-      action: PayloadAction<{
-        cardId: string;
-        targetStackId: string;
-      }>
+      action: PayloadAction<{ cardId: string; targetStackId: string }>
     ) {
       const { cardId, targetStackId } = action.payload;
-
       const card = state.cards.find((c) => c.id === cardId);
-      if (card) {
-        card.stackId = targetStackId;
-      }
+      if (card) card.stackId = targetStackId;
     },
+
+    // Remove a card
     cardRemoved(state, action: PayloadAction<string>) {
       state.cards = state.cards.filter((c) => c.id !== action.payload);
     },
+
+    // Toggle dock
     dockToggled(state) {
       state.dockExpanded = !state.dockExpanded;
     },
 
+    // Toggle swipe mode
     toggleSwipeMode(state) {
       state.swipeMode = !state.swipeMode;
     },
 
-    setCreateModal(state, action: PayloadAction<SetCreateModalPayload>) {
-      const { type, open } = action.payload;
-      if (type === CreateModalType.STACK) state.showCreateStack = open;
-      if (type === CreateModalType.CARD) state.showCreateCard = open;
+    // Open/close any create modal
+    setCreateModal(
+      state,
+      action: PayloadAction<{ type: CreateModalType; open: boolean }>
+    ) {
+      state.createModal = action.payload;
     },
   },
 });
@@ -143,10 +141,10 @@ export const {
   stackSelected,
   cardAdded,
   cardMoved,
+  cardRemoved,
   dockToggled,
   toggleSwipeMode,
   setCreateModal,
-  cardRemoved,
 } = wishlistSlice.actions;
 
 export default wishlistSlice.reducer;
