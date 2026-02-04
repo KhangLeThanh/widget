@@ -112,7 +112,9 @@ const wishlistSlice = createSlice({
         card.stackId = targetStackId;
       }
     },
-
+    cardRemoved(state, action: PayloadAction<string>) {
+      state.cards = state.cards.filter((c) => c.id !== action.payload);
+    },
     dockToggled(state) {
       state.dockExpanded = !state.dockExpanded;
     },
@@ -150,6 +152,7 @@ export const {
   closeCreateStack,
   openCreateCard,
   closeCreateCard,
+  cardRemoved,
 } = wishlistSlice.actions;
 
 export default wishlistSlice.reducer;
