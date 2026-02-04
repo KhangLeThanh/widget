@@ -2,14 +2,14 @@ import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import {
   dockToggled,
-  openCreateStack,
-  openCreateCard,
+  setCreateModal,
 } from "../features/wishlist/wishlistSlice";
 import { StackList } from "../stacks/StackList";
 import { CreateStackForm } from "../stacks/CreateStackForm";
 import { AddCardForm } from "../cards/AddCardForm";
 import { CardList } from "../cards/CardList";
 import { SwipeToggle } from "../cards/SwipeToggle";
+import { CreateModalType } from "../enum";
 
 export function WishlistDock() {
   const dispatch = useAppDispatch();
@@ -88,7 +88,9 @@ export function WishlistDock() {
             <div
               onClick={() => {
                 if (!activeStackId || stacks.length === 0) return;
-                dispatch(openCreateCard());
+                dispatch(
+                  setCreateModal({ type: CreateModalType.CARD, open: true })
+                );
                 setShowCreateMenu(false);
               }}
               style={{
@@ -106,7 +108,9 @@ export function WishlistDock() {
             </div>
             <div
               onClick={() => {
-                dispatch(openCreateStack());
+                dispatch(
+                  setCreateModal({ type: CreateModalType.STACK, open: true })
+                );
                 setShowCreateMenu(false);
               }}
               style={{

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import { cardAdded, closeCreateCard } from "../features/wishlist/wishlistSlice";
+import { cardAdded, setCreateModal } from "../features/wishlist/wishlistSlice";
+import { CreateModalType } from "../enum";
 
 export function AddCardForm() {
   const dispatch = useAppDispatch();
@@ -35,7 +36,7 @@ export function AddCardForm() {
     setDescription("");
     setCover("");
     setSelectedStackId(null);
-    dispatch(closeCreateCard());
+    dispatch(setCreateModal({ type: CreateModalType.CARD, open: false }));
   }
 
   return (
@@ -82,7 +83,14 @@ export function AddCardForm() {
       </select>
       <div style={{ display: "flex", gap: 8 }}>
         <button type="submit">Add card</button>
-        <button type="button" onClick={() => dispatch(closeCreateCard())}>
+        <button
+          type="button"
+          onClick={() =>
+            dispatch(
+              setCreateModal({ type: CreateModalType.CARD, open: false })
+            )
+          }
+        >
           Cancel
         </button>
       </div>

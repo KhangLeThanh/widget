@@ -1,5 +1,6 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { CreateModalType } from "../../enum";
 
 export interface Stack {
   id: string;
@@ -24,6 +25,11 @@ export interface WishlistState {
   showCreateStack: boolean;
   showCreateCard: boolean;
 }
+interface SetCreateModalPayload {
+  type: CreateModalType;
+  open: boolean;
+}
+
 const randomCover = () =>
   `linear-gradient(135deg,
     hsl(${Math.random() * 360}, 70%, 60%),
@@ -123,19 +129,10 @@ const wishlistSlice = createSlice({
       state.swipeMode = !state.swipeMode;
     },
 
-    openCreateStack(state) {
-      state.showCreateStack = true;
-    },
-
-    closeCreateStack(state) {
-      state.showCreateStack = false;
-    },
-    openCreateCard(state) {
-      state.showCreateCard = true;
-    },
-
-    closeCreateCard(state) {
-      state.showCreateCard = false;
+    setCreateModal(state, action: PayloadAction<SetCreateModalPayload>) {
+      const { type, open } = action.payload;
+      if (type === CreateModalType.STACK) state.showCreateStack = open;
+      if (type === CreateModalType.CARD) state.showCreateCard = open;
     },
   },
 });
@@ -148,10 +145,7 @@ export const {
   cardMoved,
   dockToggled,
   toggleSwipeMode,
-  openCreateStack,
-  closeCreateStack,
-  openCreateCard,
-  closeCreateCard,
+  setCreateModal,
   cardRemoved,
 } = wishlistSlice.actions;
 

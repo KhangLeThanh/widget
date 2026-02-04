@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { useAppDispatch } from "../hooks/redux";
-import {
-  stackAdded,
-  closeCreateStack,
-} from "../features/wishlist/wishlistSlice";
+import { stackAdded, setCreateModal } from "../features/wishlist/wishlistSlice";
+import { CreateModalType } from "../enum";
 
 export function CreateStackForm() {
   const dispatch = useAppDispatch();
@@ -47,7 +45,14 @@ export function CreateStackForm() {
 
       <div style={{ display: "flex", gap: 8 }}>
         <button type="submit">Create</button>
-        <button type="button" onClick={() => dispatch(closeCreateStack())}>
+        <button
+          type="button"
+          onClick={() =>
+            dispatch(
+              setCreateModal({ type: CreateModalType.STACK, open: false })
+            )
+          }
+        >
           Cancel
         </button>
       </div>
