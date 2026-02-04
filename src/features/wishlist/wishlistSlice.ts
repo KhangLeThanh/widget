@@ -35,7 +35,7 @@ const randomCover = () =>
     hsl(${Math.random() * 360}, 70%, 50%)
   )`;
 
-const initialState: WishlistState = {
+export const initialState: WishlistState = {
   stacks: [],
   cards: [],
   activeStackId: null,

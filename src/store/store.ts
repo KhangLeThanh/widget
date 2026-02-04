@@ -2,15 +2,13 @@ import { configureStore } from "@reduxjs/toolkit";
 import wishlistReducer from "../features/wishlist/wishlistSlice";
 import { loadWishlistState, saveWishlistState } from "./persist";
 
-const preloadedState = {
-  wishlist: loadWishlistState(),
-};
-
 export const store = configureStore({
   reducer: {
     wishlist: wishlistReducer,
   },
-  preloadedState,
+  preloadedState: {
+    wishlist: loadWishlistState(),
+  },
 });
 
 store.subscribe(() => {
