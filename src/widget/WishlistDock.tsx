@@ -14,9 +14,8 @@ import "./WishlistDock.css";
 
 export function WishlistDock() {
   const dispatch = useAppDispatch();
-  const { dockExpanded, activeStackId, stacks, createModal } = useAppSelector(
-    (s) => s.wishlist
-  );
+  const { cards, dockExpanded, activeStackId, stacks, createModal } =
+    useAppSelector((s) => s.wishlist);
 
   const [showCreateMenu, setShowCreateMenu] = useState(false);
   const plusButtonRef = useRef<HTMLButtonElement>(null);
@@ -32,20 +31,12 @@ export function WishlistDock() {
 
   return (
     <>
-      {/* Dock */}
       <div
         className={`wishlist-dock ${dockExpanded ? "expanded" : "collapsed"}`}
       >
-        {/* Header */}
         <div className="dock-header">
           <strong>Wishlist</strong>
-          <button onClick={() => dispatch(dockToggled())}>
-            {dockExpanded ? "–" : "+"}
-          </button>
-        </div>
-
-        {dockExpanded && (
-          <div className="dock-content">
+          {dockExpanded && (
             <div className="plus-button-container">
               <button
                 ref={plusButtonRef}
@@ -55,8 +46,16 @@ export function WishlistDock() {
                 +
               </button>
             </div>
+          )}
+          <button onClick={() => dispatch(dockToggled())}>
+            {dockExpanded ? "–" : "+"}
+          </button>
+        </div>
+
+        {dockExpanded && (
+          <div className="dock-content">
             <StackList />
-            <SwipeToggle />
+            {cards.length > 0 && <SwipeToggle />}
             <CardList />
           </div>
         )}

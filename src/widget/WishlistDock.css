@@ -1,55 +1,51 @@
-/* Dock base */
 .wishlist-dock {
   position: fixed;
+  bottom: 16px;
+  right: 16px;
+  width: 180px;
+  height: auto;
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
   overflow: hidden;
-  z-index: 50;
   transition: all 0.3s ease;
-  bottom: 16px; /* always at bottom */
+  z-index: 50;
 }
 
-/* Collapsed dock (bottom-right) */
-.wishlist-dock.collapsed {
-  width: 180px;
-  height: 50px;
-  right: 16px;
-}
-
-/* Expanded dock (bottom-center, grows upward) */
 .wishlist-dock.expanded {
   width: 360px;
-  height: 200px; /* grows upward from bottom */
-  left: 50%;
-  transform: translateX(-50%);
+  min-height: 220px;
+  right: 50%;
+  transform: translateX(50%);
 }
 
-/* Header */
 .dock-header {
   height: 48px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 12px;
+  border-bottom: 1px solid #eee;
+  font-weight: bold;
 }
 
-/* Dock content */
 .dock-content {
   padding: 12px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 
-/* "+" button container */
+.stacks-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
 .plus-button-container {
-  position: absolute;
-  bottom: 12px; /* stick to bottom inside dock */
-  right: 12px;
+  position: relative;
 }
 
-/* "+" button */
 .plus-button {
   width: 40px;
   height: 40px;
@@ -60,43 +56,43 @@
   cursor: pointer;
 }
 
-/* Create menu popup */
 .create-menu {
-  position: fixed;
-  transform: translateX(-50%);
+  position: absolute;
+  width: 120px;
   background: #fff;
   border: 1px solid #eee;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  width: 120px;
+  text-align: center;
   z-index: 100;
+  transform: translateX(-50%);
 }
 
-/* Menu items */
-.menu-item {
+.create-menu .menu-item {
   padding: 8px 12px;
   cursor: pointer;
   border-bottom: 1px solid #eee;
+}
+
+.create-menu .menu-item:last-child {
+  border-bottom: none;
+}
+
+.create-menu .menu-item.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
   user-select: none;
 }
 
-.menu-item.disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-
+/* Centered popup forms */
 .popup-form-center {
-  position: fixed; /* relative to viewport */
-  top: 50%; /* vertical center */
-  left: 50%; /* horizontal center */
-  transform: translate(-50%, -50%); /* perfectly center */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 200;
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  padding: 16px;
-  min-width: 320px; /* minimum width */
-  max-width: 400px; /* maximum width */
-  max-height: 90vh; /* prevent overflow vertically */
-  overflow-y: auto; /* scroll if content is too tall */
+  padding: 20px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
 }
