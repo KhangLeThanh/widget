@@ -1,74 +1,72 @@
-# React + TypeScript + Vite
+# Wishlist Dock
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A **floating wishlist dock** built with **React, TypeScript, Redux Toolkit, and Tailwind CSS**.
+The dock lives in the bottom-right corner and expands smoothly to the bottom-center, allowing users to manage **stacks** and **cards** with a clean, interactive UI.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Features
 
-## React Compiler
+- Floating dock (bottom-right → bottom-center when expanded)
+- Stack management (create, select, delete)
+- Card management (add, move between stacks via drag & drop)
+- Card cover images (URL-based)
+- Swipe toggle for cards
+- Global state management with Redux Toolkit
+- Styling with Tailwind CSS
+- ⚡ Built with Vite for fast development
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **React** (with Hooks)
+- **TypeScript**
+- **Redux Toolkit**
+- **Tailwind CSS v3**
+- **Vite**
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🚀 Getting Started
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 1️⃣ Install dependencies
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2️⃣ Run the dev server
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
-# widget
+
+Open:
+
+```
+http://localhost:5173
+```
+
+---
+
+## State Management
+
+Global state lives in **wishlistSlice** and includes:
+
+- `stacks`
+- `cards`
+- `activeStackId`
+- `dockExpanded`
+- `createModal`
+
+Actions include:
+
+- `stackAdded`
+- `stackSelected`
+- `stackDeleted`
+- `cardAdded`
+- `cardMoved`
+- `dockToggled`
+
+---

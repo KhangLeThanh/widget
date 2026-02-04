@@ -10,7 +10,6 @@ import { AddCardForm } from "../cards/AddCardForm";
 import { CardList } from "../cards/CardList";
 import { SwipeToggle } from "../cards/SwipeToggle";
 import { CreateModalType } from "../enum";
-import "./WishlistDock.css";
 
 export function WishlistDock() {
   const dispatch = useAppDispatch();
@@ -21,7 +20,6 @@ export function WishlistDock() {
   const plusButtonRef = useRef<HTMLButtonElement>(null);
   const [popupPos, setPopupPos] = useState({ top: 0, left: 0 });
 
-  // Calculate "+" button position for menu/forms
   useEffect(() => {
     if (plusButtonRef.current) {
       const rect = plusButtonRef.current.getBoundingClientRect();
@@ -31,29 +29,44 @@ export function WishlistDock() {
 
   return (
     <>
+      {/* Dock */}
       <div
-        className={`wishlist-dock ${dockExpanded ? "expanded" : "collapsed"}`}
+        className={`
+    fixed bottom-4 z-50 overflow-hidden rounded-xl bg-white
+    shadow-[0_10px_30px_rgba(0,0,0,0.15)]
+    transition-all duration-300 ease-in-out
+    ${
+      dockExpanded
+        ? "w-[360px] min-h-[220px] right-1/2 translate-x-1/2"
+        : "w-[180px] right-4 translate-x-0"
+    }
+  `}
       >
-        <div className="dock-header">
-          <strong>Wishlist</strong>
+        <div className="flex h-12 items-center justify-between border-b border-gray-200 px-3 font-bold">
+          <div>Wishlist</div>
+
           {dockExpanded && (
-            <div className="plus-button-container">
+            <div className="relative">
               <button
                 ref={plusButtonRef}
-                onClick={() => setShowCreateMenu((prev) => !prev)}
-                className="plus-button"
+                onClick={() => setShowCreateMenu((p) => !p)}
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-300 bg-gray-100 text-2xl hover:bg-gray-200"
               >
                 +
               </button>
             </div>
           )}
-          <button onClick={() => dispatch(dockToggled())}>
+
+          <button
+            onClick={() => dispatch(dockToggled())}
+            className="ml-2 text-xl"
+          >
             {dockExpanded ? "–" : "+"}
           </button>
         </div>
 
         {dockExpanded && (
-          <div className="dock-content">
+          <div className="flex flex-col gap-3 p-3">
             <StackList />
             {cards.length > 0 && <SwipeToggle />}
             <CardList />
@@ -63,13 +76,17 @@ export function WishlistDock() {
 
       {showCreateMenu && (
         <div
-          className="create-menu"
+          className="absolute z-[100] w-[120px] -translate-x-1/2 rounded-lg border border-gray-200 bg-white text-center shadow-md"
           style={{ top: popupPos.top - 80, left: popupPos.left }}
         >
           <div
-            className={`menu-item ${
-              !activeStackId || stacks.length === 0 ? "disabled" : ""
-            }`}
+            className={`cursor-pointer border-b border-gray-200 px-3 py-2
+              ${
+                !activeStackId || stacks.length === 0
+                  ? "cursor-not-allowed opacity-50"
+                  : "hover:bg-gray-100"
+              }
+            `}
             onClick={() => {
               if (!activeStackId || stacks.length === 0) return;
               dispatch(
@@ -80,8 +97,9 @@ export function WishlistDock() {
           >
             Card
           </div>
+
           <div
-            className="menu-item"
+            className="cursor-pointer px-3 py-2 hover:bg-gray-100"
             onClick={() => {
               dispatch(
                 setCreateModal({ type: CreateModalType.STACK, open: true })
@@ -95,13 +113,13 @@ export function WishlistDock() {
       )}
 
       {createModal.open && createModal.type === CreateModalType.CARD && (
-        <div className="popup-form-center">
+        <div className="fixed left-1/2 top-1/2 z-[200] -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white p-5 shadow-[0_15px_40px_rgba(0,0,0,0.25)]">
           <AddCardForm />
         </div>
       )}
 
       {createModal.open && createModal.type === CreateModalType.STACK && (
-        <div className="popup-form-center">
+        <div className="fixed left-1/2 top-1/2 z-[200] -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white p-5 shadow-[0_15px_40px_rgba(0,0,0,0.25)]">
           <CreateStackForm />
         </div>
       )}

@@ -39,7 +39,7 @@ export function CardItem({ card }: Props) {
           boxShadow: "rgb(71 71 71 / 30%) 0px 0px 0px 2000px inset",
         }}
       >
-        <strong>{card.title}</strong>
+        <strong style={{ fontSize: 14, color: "#fff" }}>{card.title}</strong>
         {card.description && (
           <p style={{ fontSize: 12, color: "#fff" }}>{card.description}</p>
         )}
