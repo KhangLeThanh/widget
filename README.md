@@ -48,6 +48,12 @@ Open:
 http://localhost:5173
 ```
 
+Build:
+
+```
+npm run build
+```
+
 ---
 
 ## State Management
@@ -70,3 +76,14 @@ Actions include:
 - `dockToggled`
 
 ---
+
+## Embedding the Widget
+
+iframe (simple isolation)
+
+<iframe
+  src="https://your-cdn.com/widget.html"
+  width="400"
+  height="600"
+  style="border:none; border-radius:12px;"
+></iframe>
